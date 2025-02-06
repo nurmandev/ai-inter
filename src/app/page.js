@@ -1,288 +1,149 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Introduction from "./components/Introduction.jsx";
-import GetStarted from "./components/GetStarted.jsx";
-import JobDesc from "./components/JobDesc.jsx";
-import PersonalDesc from "./components/PersonalDesc.jsx";
-import InformationLoad from "./components/InformationLoad.jsx";
-import MeetingSelection from "./components/MeetingSelection.jsx";
-import EquipmentCheck from "./components/EquipmentCheck.jsx";
-import Interview from "./components/Interview.jsx";
-import VideoHighlights from "./components/VideoHighlights.jsx";
-import ReportLoad from "./components/ReportLoad.jsx";
+import Introduction from "./components/Introduction";
+import GetStarted from "./components/GetStarted";
+import JobDesc from "./components/JobDesc";
+import PersonalDesc from "./components/PersonalDesc";
+import InformationLoad from "./components/InformationLoad";
+import MeetingSelection from "./components/MeetingSelection";
+import EquipmentCheck from "./components/EquipmentCheck";
+import Interview from "./components/Interview";
+import VideoHighlights from "./components/VideoHighlights";
+import ReportLoad from "./components/ReportLoad";
 
 export default function Home() {
-  const [currentHTML, setCurrentHTML] = useState(0);
-
-  const [jobLink, setJobLink] = useState("");
-  const [formJobTitle, setFormJobTitle] = useState("");
-  const [formEmployerName, setFormEmployerName] = useState("");
-  const [formEmployerLocation, setFormEmployerLocation] = useState("");
-  const [formJobDescription, setFormJobDescription] = useState("");
-  const [formEmployerDescription, setFormEmployerDescription] = useState("");
-
-  const [resumeName, setResumeName] = useState("Ex. John_Doe.pdf");
-  const [resumeFile, setResumeFile] = useState(null);
-
-  const [formFullName, setFormFullName] = useState("");
-  const [formPersonalJobTitle, setFormPersonalJobTitle] = useState("");
-  const [formDegrees, setFormDegrees] = useState([]);
-  const [formSchools, setFormSchools] = useState([]);
-  const [formSchoolStartDates, setFormSchoolStartDates] = useState([]);
-  const [formSchoolEndDates, setFormSchoolEndDates] = useState([]);
-
-  const [formExperienceJobTitles, setFormExperienceJobTitles] = useState([]);
-  const [formExperienceStartDates, setFormExperienceStartDates] = useState([]);
-  const [formExperienceEndDates, setFormExperienceEndDates] = useState([]);
-  const [formExperienceDescriptions, setFormExperienceDescriptions] = useState(
-    []
-  );
-  const [formExperienceCompanies, setFormExperienceCompanies] = useState([]);
-  const [formExperienceLocations, setFormExperienceLocations] = useState([]);
-
-  const [currentQuestion, setCurrentQuestion] = useState("");
-
-  const [interviewMode, setInterviewMode] = useState("");
-  const [recentVideoRecording, setRecentVideoRecording] = useState("");
-
-  const [textReport, setTextReport] = useState("");
-  const [video1, setVideo1] = useState("");
-  const [video2, setVideo2] = useState("");
-  const [video3, setVideo3] = useState("");
-  const [video1_title, setVideo1_title] = useState("");
-  const [video2_title, setVideo2_title] = useState("");
-  const [video3_title, setVideo3_title] = useState("");
-  const [video1_summary, setVideo1_summary] = useState("");
-  const [video2_summary, setVideo2_summary] = useState("");
-  const [video3_summary, setVideo3_summary] = useState("");
-
-  // const API_URL = 'https://e552-128-195-96-60.ngrok-free.app/'
-  const API_URL = process.env.API_URL;
-  console.log("api url:" + API_URL);
-
-  const initializeData = {
-    jobLink: jobLink,
-    formJobTitle: formJobTitle,
-    formEmployerName: formEmployerName,
-    formEmployerLocation: formEmployerLocation,
-    formJobDescription: formJobDescription,
-    formEmployerDescription: formEmployerDescription,
-
-    resumeName: resumeName,
-    resumeFile: resumeFile,
-
-    formFullName: formFullName,
-    formPersonalJobTitle: formPersonalJobTitle,
-    formDegrees: formDegrees,
-    formSchools: formSchools,
-    formSchoolStartDates: formSchoolStartDates,
-    formSchoolEndDates: formSchoolEndDates,
-
-    formExperienceJobTitles: formExperienceJobTitles,
-    formExperienceStartDates: formExperienceStartDates,
-    formExperienceEndDates: formExperienceEndDates,
-    formExperienceDescriptions: formExperienceDescriptions,
-    formExperienceCompanies: formExperienceCompanies,
-    formExperienceLocations: formExperienceLocations,
-
-    interviewMode: interviewMode,
-  };
-
-  const HTML_PARTS = [
-    <Introduction currentHTML={0} setCurrentHTML={setCurrentHTML} />,
-    <GetStarted currentHTML={1} setCurrentHTML={setCurrentHTML} />,
-    <JobDesc
-      currentHTML={2}
-      setCurrentHTML={setCurrentHTML}
-      jobLink={jobLink}
-      setJobLink={setJobLink}
-      formJobTitle={formJobTitle}
-      formEmployerName={formEmployerName}
-      formEmployerLocation={formEmployerLocation}
-      formJobDescription={formJobDescription}
-      formEmployerDescription={formEmployerDescription}
-      setFormJobTitle={setFormJobTitle}
-      setFormEmployerName={setFormEmployerName}
-      setFormEmployerLocation={setFormEmployerLocation}
-      setFormJobDescription={setFormJobDescription}
-      setFormEmployerDescription={setFormEmployerDescription}
-    />,
-    <PersonalDesc
-      currentHTML={3}
-      setCurrentHTML={setCurrentHTML}
-      resumeName={resumeName}
-      setResume={setResumeName}
-      setResumeFile={setResumeFile}
-      formFullName={formFullName}
-      setFormFullName={setFormFullName}
-      formPersonalJobTitle={formPersonalJobTitle}
-      setFormPersonalJobTitle={setFormPersonalJobTitle}
-      formDegrees={formDegrees}
-      setFormDegrees={setFormDegrees}
-      formSchools={formSchools}
-      setFormSchools={setFormSchools}
-      formSchoolStartDates={formSchoolStartDates}
-      setFormSchoolStartDates={setFormSchoolStartDates}
-      formSchoolEndDates={formSchoolEndDates}
-      setFormSchoolEndDates={setFormSchoolEndDates}
-      formExperienceJobTitles={formExperienceJobTitles}
-      setFormExperienceJobTitles={setFormExperienceJobTitles}
-      formExperienceStartDates={formExperienceStartDates}
-      setFormExperienceStartDates={setFormExperienceStartDates}
-      formExperienceEndDates={formExperienceEndDates}
-      setFormExperienceEndDates={setFormExperienceEndDates}
-      formExperienceDescriptions={formExperienceDescriptions}
-      setFormExperienceDescriptions={setFormExperienceDescriptions}
-      formExperienceCompanies={formExperienceCompanies}
-      setFormExperienceCompanies={setFormExperienceCompanies}
-      formExperienceLocations={formExperienceLocations}
-      setFormExperienceLocations={setFormExperienceLocations}
-    />,
-    <MeetingSelection
-      currentHTML={4}
-      setCurrentHTML={setCurrentHTML}
-      interviewMode={interviewMode}
-      setInterviewMode={setInterviewMode}
-    />,
-    <InformationLoad currentHTML={5} setCurrentHTML={setCurrentHTML} />,
-    <EquipmentCheck currentHTML={6} setCurrentHTML={setCurrentHTML} />,
-    <Interview
-      currentHTML={7}
-      setCurrentHTML={setCurrentHTML}
-      currentQuestion={currentQuestion}
-      interviewMode={interviewMode}
-      setRecentVideoRecording={setRecentVideoRecording}
-    />,
-    <ReportLoad
-      currentHTML={8}
-      setCurrentHTML={setCurrentHTML}
-      textReport={textReport}
-      video1={video1}
-      video2={video2}
-      video3={video3}
-      setTextReport={setTextReport}
-      setVideo1={setVideo1}
-      setVideo2={setVideo2}
-      setVideo3={setVideo3}
-      video1_title={video1_title}
-      video2_title={video2_title}
-      video3_title={video3_title}
-      setVideo1_title={setVideo1_title}
-      setVideo2_title={setVideo2_title}
-      setVideo3_title={setVideo3_title}
-      video1_summary={video1_summary}
-      video2_summary={video2_summary}
-      video3_summary={video3_summary}
-      setVideo1_summary={setVideo1_summary}
-      setVideo2_summary={setVideo2_summary}
-      setVideo3_summary={setVideo3_summary}
-      API_URL={API_URL}
-    />,
-    <VideoHighlights
-      currentHTML={9}
-      setCurrentHTML={setCurrentHTML}
-      video1={video1}
-      video2={video2}
-      video3={video3}
-      video1_title={video1_title}
-      video2_title={video2_title}
-      video3_title={video3_title}
-      video1_summary={video1_summary}
-      video2_summary={video2_summary}
-      video3_summary={video3_summary}
-      textReport={textReport}
-    />,
-  ];
-
-  console.log({
-    video1: video1,
-    video2: video2,
-    video3: video3,
-
-    video1_title: video1_title,
-    video2_title: video2_title,
-    video3_title: video3_title,
-
-    video1_summary: video1_summary,
-    video2_summary: video2_summary,
-    video3_summary: video3_summary,
-
-    textReport: textReport,
+  const [currentStep, setCurrentStep] = useState(0);
+  const [formData, setFormData] = useState({
+    jobLink: "",
+    formJobTitle: "",
+    formEmployerName: "",
+    formEmployerLocation: "",
+    formJobDescription: "",
+    formEmployerDescription: "",
+    resumeName: "Ex. John_Doe.pdf",
+    resumeFile: null,
+    formFullName: "",
+    formPersonalJobTitle: "",
+    formDegrees: [],
+    formSchools: [],
+    formSchoolStartDates: [],
+    formSchoolEndDates: [],
+    formExperienceJobTitles: [],
+    formExperienceStartDates: [],
+    formExperienceEndDates: [],
+    formExperienceDescriptions: [],
+    formExperienceCompanies: [],
+    formExperienceLocations: [],
+    interviewMode: "",
   });
 
-  useEffect(() => {
-    if (currentHTML === 7) {
-      let API_LINK = API_URL + "init_interview_session";
-      let body = JSON.stringify({
-        mode: initializeData.interviewMode,
-        custom_job_str: {
-          formJobTitle: initializeData.formJobTitle,
-          formEmployerName: initializeData.formEmployerName,
-          formEmployerLocation: initializeData.formEmployerLocation,
-          formJobDescription: initializeData.formJobDescription,
-          formEmployerDescription: initializeData.formEmployerDescription,
-        },
-        interviewee_records: {
-          formFullName: initializeData.formFullName,
-          formPersonalJobTitle: initializeData.formPersonalJobTitle,
-          formDegrees: initializeData.formDegrees,
-          formSchools: initializeData.formSchools,
-          formSchoolStartDates: initializeData.formSchoolStartDates,
-          formSchoolEndDates: initializeData.formSchoolEndDates,
+  const [interviewData, setInterviewData] = useState({
+    currentQuestion: "",
+    recentVideoRecording: "",
+    textReport: "",
+    videos: [
+      { title: "", summary: "", url: "" },
+      { title: "", summary: "", url: "" },
+      { title: "", summary: "", url: "" },
+    ],
+  });
 
-          formExperienceJobTitles: initializeData.formExperienceJobTitles,
-          formExperienceStartDates: initializeData.formExperienceStartDates,
-          formExperienceEndDates: initializeData.formExperienceEndDates,
-          formExperienceDescriptions: initializeData.formExperienceDescriptions,
-          formExperienceCompanies: initializeData.formExperienceCompanies,
-          formExperienceLocations: initializeData.formExperienceLocations,
-        },
-        website_url: initializeData.jobLink,
-        session_key: "test",
-        interviewee_resume: initializeData.resumeFile,
-      });
-      fetch(API_LINK, {
+  const API_URL = process.env.API_URL;
+
+  useEffect(() => {
+    if (currentStep === 7) {
+      fetch(`${API_URL}init_interview_session`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          "ngrok-skip-browser-warning": "true",
         },
-        body: body,
+        body: JSON.stringify({
+          mode: formData.interviewMode,
+          custom_job_str: {
+            formJobTitle: formData.formJobTitle,
+            formEmployerName: formData.formEmployerName,
+            formEmployerLocation: formData.formEmployerLocation,
+            formJobDescription: formData.formJobDescription,
+            formEmployerDescription: formData.formEmployerDescription,
+          },
+          interviewee_records: {
+            ...formData,
+          },
+          website_url: formData.jobLink,
+          session_key: "test",
+          interviewee_resume: formData.resumeFile,
+        }),
       })
-        .then((response) => response.json())
-        .then((data) => setCurrentQuestion(JSON.parse(data.body)["summary"]));
+        .then((res) => res.json())
+        .then((data) =>
+          setInterviewData((prev) => ({
+            ...prev,
+            currentQuestion: JSON.parse(data.body).summary,
+          }))
+        )
+        .catch((err) => console.error(err));
     }
-  }, [currentHTML]);
+  }, [currentStep]);
 
   useEffect(() => {
-    if (recentVideoRecording !== "") {
-      try {
-        let API_LINK = API_URL + "get_interview_question";
-        let body = JSON.stringify({
-          user_input: recentVideoRecording,
+    if (interviewData.recentVideoRecording) {
+      fetch(`${API_URL}get_interview_question`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          user_input: interviewData.recentVideoRecording,
           session_key: "test",
-        });
-        fetch(API_LINK, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            "ngrok-skip-browser-warning": "true",
-          },
-          body: body,
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log(data);
-            setCurrentQuestion(JSON.parse(data.body)["next_question"]);
-          });
-      } catch (error) {
-        console.log(error);
-      }
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) =>
+          setInterviewData((prev) => ({
+            ...prev,
+            currentQuestion: JSON.parse(data.body).next_question,
+          }))
+        )
+        .catch((err) => console.error(err));
     }
-  }, [recentVideoRecording]);
+  }, [interviewData.recentVideoRecording]);
 
-  return <div className="overflow-x-hidden">{HTML_PARTS[currentHTML]}</div>;
+  const steps = [
+    <Introduction setCurrentStep={setCurrentStep} />,
+    <GetStarted setCurrentStep={setCurrentStep} />,
+    <JobDesc
+      formData={formData}
+      setFormData={setFormData}
+      setCurrentStep={setCurrentStep}
+    />,
+    <PersonalDesc
+      formData={formData}
+      setFormData={setFormData}
+      setCurrentStep={setCurrentStep}
+    />,
+    <MeetingSelection
+      formData={formData}
+      setFormData={setFormData}
+      setCurrentStep={setCurrentStep}
+    />,
+    <InformationLoad setCurrentStep={setCurrentStep} />,
+    <EquipmentCheck setCurrentStep={setCurrentStep} />,
+    <Interview
+      interviewData={interviewData}
+      setInterviewData={setInterviewData}
+      setCurrentStep={setCurrentStep}
+    />,
+    <ReportLoad
+      interviewData={interviewData}
+      setInterviewData={setInterviewData}
+      API_URL={API_URL}
+      setCurrentStep={setCurrentStep}
+    />,
+    <VideoHighlights interviewData={interviewData} />,
+  ];
+
+  return <div className="overflow-x-hidden">{steps[currentStep]}</div>;
 }
