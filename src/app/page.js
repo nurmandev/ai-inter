@@ -49,11 +49,11 @@ export default function Home() {
     ],
   });
 
-  const API_URL = process.env.API_URL;
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/"; // Ensure the API URL is accessible
 
-  useEffect(() => {
-    if (currentStep === 7) {
-      fetch(`${API_URL}init_interview_session`, {
+  const initInterviewSession = async () => {
+    try {
+      const response = await fetch(`${API_URL}init_interview_session`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -68,28 +68,31 @@ export default function Home() {
             formJobDescription: formData.formJobDescription,
             formEmployerDescription: formData.formEmployerDescription,
           },
-          interviewee_records: {
-            ...formData,
-          },
+          interviewee_records: { ...formData },
           website_url: formData.jobLink,
-          session_key: "test",
+          session_key: "test", // Replace with dynamic session key if needed
           interviewee_resume: formData.resumeFile,
         }),
-      })
-        .then((res) => res.json())
-        .then((data) =>
-          setInterviewData((prev) => ({
-            ...prev,
-            currentQuestion: JSON.parse(data.body).summary,
-          }))
-        )
-        .catch((err) => console.error(err));
+      });
+      const data = await response.json();
+      setInterviewData((prev) => ({
+        ...prev,
+        currentQuestion: JSON.parse(data.body).summary,
+      }));
+    } catch (error) {
+      console.error("Error initializing interview session:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (currentStep === 7) {
+      initInterviewSession();
     }
   }, [currentStep]);
 
-  useEffect(() => {
-    if (interviewData.recentVideoRecording) {
-      fetch(`${API_URL}get_interview_question`, {
+  const fetchNextQuestion = async () => {
+    try {
+      const response = await fetch(`${API_URL}get_interview_question`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -99,15 +102,20 @@ export default function Home() {
           user_input: interviewData.recentVideoRecording,
           session_key: "test",
         }),
-      })
-        .then((res) => res.json())
-        .then((data) =>
-          setInterviewData((prev) => ({
-            ...prev,
-            currentQuestion: JSON.parse(data.body).next_question,
-          }))
-        )
-        .catch((err) => console.error(err));
+      });
+      const data = await response.json();
+      setInterviewData((prev) => ({
+        ...prev,
+        currentQuestion: JSON.parse(data.body).next_question,
+      }));
+    } catch (error) {
+      console.error("Error fetching next interview question:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (interviewData.recentVideoRecording) {
+      fetchNextQuestion();
     }
   }, [interviewData.recentVideoRecording]);
 
