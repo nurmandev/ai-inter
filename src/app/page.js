@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import Introduction from "./components/Introduction.jsx";
 import GetStarted from "./components/GetStarted.jsx";
