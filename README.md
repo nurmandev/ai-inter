@@ -137,6 +137,6 @@ The **AI Interviewer** is an innovative virtual assistant designed to automate t
 
 ## License
 
-This project is licensed All these things are part of **Maitri AI**..
+This project is licensed All these things are part of **SoftSolvic AI**..
 
 ---
