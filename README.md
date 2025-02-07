@@ -123,7 +123,3 @@ The **AI Interviewer** is an innovative virtual assistant designed to automate t
 This project is licensed All these things are part of **Maitri AI**..
 
 ---
-
-## Author
-- Vinay Kumar
-- vinaykumar.pydev@gmail.com
